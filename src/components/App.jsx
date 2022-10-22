@@ -15,6 +15,19 @@ class App extends Component {
     filter: '',
   };
 
+  componentDidMount() {
+    const allContacts = JSON.parse(localStorage.getItem('contacts'));
+    if (allContacts) {
+      this.setState({ contacts: allContacts });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   onAddContact = newName => {
     if (
       this.state.contacts.some(
@@ -50,18 +63,6 @@ class App extends Component {
       };
     });
   };
-
-  componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-
-    this.setState({ contacts: JSON.parse(contacts) });
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    if (this.state.contacts !== prevState.contacts) {
-      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-    }
-  }
 
   render() {
     return (
