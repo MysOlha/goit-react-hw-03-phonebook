@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 import Contacts from './Contacts/Contacts';
 import Filter from './Filter/Filter';
 import Form from './Form';
@@ -36,7 +37,7 @@ class App extends Component {
           name.toLowerCase() === newName.name.toLowerCase()
       )
     ) {
-      toast(`${newName.name} is alredy in contacts`);
+      toast.error(`${newName.name} is alredy in contacts`);
       return;
     }
     this.setState(({ contacts }) => ({ contacts: [...contacts, newName] }));
