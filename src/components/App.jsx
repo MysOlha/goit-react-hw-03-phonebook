@@ -17,10 +17,11 @@ class App extends Component {
   };
 
   componentDidMount() {
-    const allContacts = JSON.parse(localStorage.getItem('contacts'));
-    if (allContacts) {
-      this.setState({ contacts: allContacts });
-    }
+    this.allContactsFromLS();
+    // const allContacts = JSON.parse(localStorage.getItem('contacts'));
+    // if (allContacts) {
+    //   this.setState({ contacts: allContacts });
+    // }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -28,6 +29,16 @@ class App extends Component {
       localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
     }
   }
+
+  allContactsFromLS = () => {
+    try {
+      return this.setState({
+        contacts: JSON.parse(localStorage.getItem('contacts')) ?? [],
+      });
+    } catch (error) {
+      return [];
+    }
+  };
 
   onAddContact = newName => {
     if (
@@ -66,6 +77,7 @@ class App extends Component {
   };
 
   render() {
+    const { filter, contacts } = this.state;
     return (
       <>
         <h1
@@ -88,14 +100,17 @@ class App extends Component {
         >
           Contacts:
         </h2>
-        <Filter
-          value={this.state.filter}
-          filterContacts={this.onFilterContact}
-        />
-        <Contacts
-          contacts={this.getContactList()}
-          onRemove={this.onRemoveContact}
-        />
+
+        {contacts.length !== 0 && (
+          <Filter value={filter} filterContacts={this.onFilterContact} />
+        )}
+
+        {contacts.length !== 0 && (
+          <Contacts
+            contacts={this.getContactList()}
+            onRemove={this.onRemoveContact}
+          />
+        )}
 
         <ToastContainer />
       </>
